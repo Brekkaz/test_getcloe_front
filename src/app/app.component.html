@@ -1,58 +1,82 @@
-<div style="width: 50%">
-  <button (click)="new()">New</button>
-
-  <p-table
-    #dt
-    [value]="people"
-    [lazy]="true"
-    (onLazyLoad)="loadPeople($event)"
-    [paginator]="true"
-    [rows]="10"
-    [totalRecords]="totalRecords"
-    [loading]="loading"
-  >
-    <ng-template pTemplate="caption">
-      <div style="text-align: right">
-        <i class="pi pi-search" style="margin: 4px 4px 0 0"></i>
-        <input
-          type="text"
-          pInputText
-          size="50"
-          placeholder="Global Filter"
-          (input)="dt.filterGlobal($event.target.value, 'contains')"
-          style="width: auto"
-        />
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="text-success text-center">Test</h1>
+    </div>
+    <div class="col-12">
+      <button class="btn btn-success" (click)="new()">New</button>
+    </div>
+    <div class="col overflow-auto border">
+      <p-table
+        #dt
+        [value]="people"
+        [lazy]="true"
+        (onLazyLoad)="loadPeople($event)"
+        [paginator]="true"
+        [rows]="10"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+      >
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+            <i class="pi pi-search" style="margin: 4px 4px 0 0"></i>
+            <input
+              type="text"
+              pInputText
+              size="50"
+              placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width: auto"
+            />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Birth Date</th>
+            <th>Options</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-person>
+          <tr>
+            <td>{{ person.id }}</td>
+            <td>{{ person.first_name }}</td>
+            <td>{{ person.last_name }}</td>
+            <td>{{ person.address }}</td>
+            <td>{{ person.email }}</td>
+            <td>{{ person.phone }}</td>
+            <td>{{ person.birth_date | date: "dd/MM/yyyy" }}</td>
+            <td>
+              <div class="d-flex">
+                <button
+                  class="btn btn-sm btn-primary mr-1"
+                  (click)="edit(person.id)"
+                >
+                  Edit
+                </button>
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="delete(person.id)"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="col" *ngIf="showForm">
+      <div class="card">
+        <div class="card-body">
+          <app-person [id]="id" (closeForm)="closeForm()"></app-person>
+        </div>
       </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Id</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Address</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Birth Date</th>
-        <th>Options</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-person>
-      <tr>
-        <td>{{ person.id }}</td>
-        <td>{{ person.first_name }}</td>
-        <td>{{ person.last_name }}</td>
-        <td>{{ person.address }}</td>
-        <td>{{ person.email }}</td>
-        <td>{{ person.phone }}</td>
-        <td>{{ person.birth_date }}</td>
-        <td>
-          <button type="button" (click)="edit(person.id)">Edit</button>
-          <button type="button" (click)="delete(person.id)">Delete</button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
-<div style="width: 50%" *ngIf="showForm">
-  <app-person [id]="id" (closeForm)="closeForm()"></app-person>
+    </div>
+  </div>
 </div>

@@ -36,7 +36,7 @@ export class PersonComponent implements OnInit {
       first_name: ['', [Validators.required]],
       last_name: ['', Validators.required],
       address: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       birth_date: ['', Validators.required],
     });
@@ -51,7 +51,8 @@ export class PersonComponent implements OnInit {
 
   myPacthValue(resp) {
     this.loading = false;
-    this.personForm.patchValue(resp);
+    this.personForm.patchValue(resp);    
+    this.personForm.get('birth_date').patchValue(this.formatDate(resp.birth_date));
   }
 
   onSave() {
@@ -84,7 +85,7 @@ export class PersonComponent implements OnInit {
   }
 
   onFailure(err) {
-    alert('Failed operation...' + err.code);
+    alert('Failed operation...');
     //err.error.errors,
   }
 
@@ -109,5 +110,15 @@ export class PersonComponent implements OnInit {
 
   close() {
     this.closeForm.emit();
+  }
+
+  private formatDate(date) {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
   }
 }

@@ -22,12 +22,14 @@ export class AppComponent {
 
   new() {
     this.id = null;
-    this.showForm = true;
+    this.showForm = !this.showForm;
   }
 
   edit(id) {
-    this.id = id;
-    this.showForm = true;
+    if (!this.showForm) {
+      this.id = id;
+      this.showForm = true;
+    }
   }
 
   loadPeople(event: LazyLoadEvent) {
